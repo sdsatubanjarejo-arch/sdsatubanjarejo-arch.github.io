@@ -38,12 +38,12 @@ body{overflow-x:hidden}
 .logo-wrap{
   width:210px;height:210px;margin:0 auto 8px;position:relative;display:grid;place-items:center;perspective:900px;
 }
-.logo-wrap:before{
+.logo-wrap:before{display:none;
   content:"";position:absolute;inset:28px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,215,0,.55),transparent 66%);
   filter:blur(8px);animation:halo 2.8s ease-in-out infinite;
 }
-.logo-wrap:after{
+.logo-wrap:after{display:none;
   content:"";position:absolute;inset:8px;border-radius:50%;
   border:2px solid rgba(255,215,0,.35);
   box-shadow:0 0 28px rgba(255,215,0,.55), inset 0 0 24px rgba(255,215,0,.25);
@@ -63,7 +63,7 @@ body{overflow-x:hidden}
 @keyframes orbit{to{transform:rotate(360deg)}}
 .title{
   margin:0;
-  font-family:Georgia,serif;
+  font-family:Arial,sans-serif;
   color:#ffd76a;
   font-size:clamp(32px,6vw,56px);
   letter-spacing:1px;
@@ -176,7 +176,7 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
 <body>
 <div class="page">
   <div class="gold-dots"></div>
-  <div class="admin-note">🔒 MODE ADMIN<br>KLIK AREA ATAS 5X</div>
+  <div class="admin-note">🔒 MODE ADMIN<br>KETIK LOGO 5X</div>
   <header class="header">
     <div class="logo-wrap"><img src="logo.png" class="logo" alt="Logo SDN 1 Banjarejo"></div>
     <h1 class="title">PENGUMUMAN KELULUSAN</h1>
@@ -201,7 +201,7 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
     </section>
   </main>
 </div>
-<audio id="suaraSelamat" src="selamat.wav" preload="auto"></audio>
+<audio id="suaraSelamat" src="selamat.mp3" preload="auto"></audio>
 <script>
 const siswa={
   "AHMAD CHOIRULBALYA": "ahmad-choirulbalya.webp",
@@ -245,7 +245,7 @@ const unlockTime=new Date("2026-06-02T10:00:00+07:00").getTime();
 let locked=true,namaAktif="",adminMode=false,adminTapCount=0,adminTapTimer=null;
 function updateTimer(){if(adminMode)return;let diff=unlockTime-Date.now();const btn=document.getElementById("btnCari");if(diff<=0){locked=false;timer.style.display="none";btn.disabled=false;btn.innerHTML="🔍 Cari Hasil";return}locked=true;btn.disabled=true;btn.innerHTML="Belum Dibuka";let d=Math.floor(diff/86400000);diff%=86400000;let h=Math.floor(diff/3600000);diff%=3600000;let m=Math.floor(diff/60000);let s=Math.floor((diff%60000)/1000);d=d<0?0:d;document.getElementById("d").innerHTML=d;document.getElementById("h").innerHTML=h;document.getElementById("m").innerHTML=m;document.getElementById("s").innerHTML=s}
 setInterval(updateTimer,1000);updateTimer();
-document.querySelector(".header").addEventListener("click",()=>{adminTapCount++;clearTimeout(adminTapTimer);adminTapTimer=setTimeout(()=>adminTapCount=0,2500);if(adminTapCount>=5){adminTapCount=0;let p=prompt("Masukkan Password Admin:");if(p==="SDN1BANJAREJO2026"){adminMode=true;locked=false;timer.style.display="none";btnCari.disabled=false;btnCari.innerHTML="🔍 Cari Hasil";alert("Mode Admin Aktif")}}});
+document.querySelector(".logo-wrap").addEventListener("click",()=>{adminTapCount++;clearTimeout(adminTapTimer);adminTapTimer=setTimeout(()=>adminTapCount=0,2500);if(adminTapCount>=5){adminTapCount=0;let p=prompt("Masukkan Password Admin:");if(p==="SDN1BANJAREJO2026"){adminMode=true;locked=false;timer.style.display="none";btnCari.disabled=false;btnCari.innerHTML="🔍 Cari Hasil";alert("Mode Admin Aktif")}}});
 function cek(){if(locked){alert("Pengumuman dibuka 2 Juni 2026 pukul 10:00 WIB");return}const nm=document.getElementById("nama").value.toUpperCase().trim();if(nm===""){alert("Masukkan nama siswa");return}if(!siswa[nm]){alert("Nama tidak ditemukan");return}namaAktif=nm;result.style.display="none";envelopeBox.style.display="none";loading.style.display="block";const bar=document.querySelector(".bar span");bar.style.transition="none";bar.style.width="0";setTimeout(()=>{bar.style.transition="1s";bar.style.width="100%"},40);setTimeout(()=>{loading.style.display="none";envelopeBox.style.display="block";env.classList.remove("open");envelopeBox.scrollIntoView({behavior:"smooth",block:"center"})},1050)}
 function bukaAmplop(){env.classList.add("open");playSound();setTimeout(()=>{namaSiswa.innerHTML=namaAktif;fotoSiswa.src=siswa[namaAktif];document.getElementById("nisn").innerHTML=nisn[namaAktif]||"-";result.style.display="block";konfeti();result.scrollIntoView({behavior:"smooth",block:"start"})},950)}
 function playSound(){soundBadge.style.display="block";const a=document.getElementById("suaraSelamat");a.currentTime=0;a.volume=.9;a.play().catch(()=>{})}
