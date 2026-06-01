@@ -74,15 +74,17 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
 @media(max-width:720px){.admin-note{display:none!important;display:none}.logo-wrap{width:150px;height:150px}.logo{width:130px}.title{font-size:34px}.school{font-size:24px}.timer-date{font-size:24px}.countdown span{font-size:24px}.search{grid-template-columns:1fr}button{height:50px}.envelope-stage{height:210px}.envelope{width:276px;height:172px}.result-card{grid-template-columns:1fr;text-align:center}.photo{width:135px;height:176px;margin:auto}.row{grid-template-columns:1fr;text-align:center}.row span:nth-child(2){display:none}.location{font-size:17px}}
 </style>
 
-<style id="v14-ultra-gold-lock-style">
-#v14LockOverlay{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at top,rgba(255,224,120,.18),rgba(0,0,0,.88));backdrop-filter:blur(8px);padding:18px}
-#v14LockBox{max-width:430px;width:100%;border:1.6px solid rgba(255,215,120,.9);border-radius:26px;background:linear-gradient(145deg,rgba(12,10,4,.96),rgba(45,32,8,.96));box-shadow:0 0 35px rgba(255,196,61,.32),inset 0 0 22px rgba(255,215,120,.08);padding:30px 24px;text-align:center;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-#v14LockBox .goldIcon{font-size:42px;margin-bottom:8px}
-#v14LockBox h2{margin:4px 0 8px;color:#ffd979;letter-spacing:.08em;font-size:25px;text-transform:uppercase}
+
+<style id="v14-admin-bypass-lock-style">
+#v14LockOverlay{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at top,rgba(255,224,120,.20),rgba(0,0,0,.90));backdrop-filter:blur(9px);padding:18px}
+#v14LockBox{max-width:440px;width:100%;border:1.8px solid rgba(255,215,120,.95);border-radius:28px;background:linear-gradient(145deg,rgba(10,8,3,.97),rgba(45,31,8,.97));box-shadow:0 0 38px rgba(255,196,61,.34),inset 0 0 24px rgba(255,215,120,.09);padding:31px 24px;text-align:center;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+#v14LockBox .goldIcon{font-size:44px;margin-bottom:9px}
+#v14LockBox h2{margin:4px 0 10px;color:#ffd979;letter-spacing:.08em;font-size:25px;text-transform:uppercase}
 #v14LockBox p{margin:8px 0;color:#fff3c9;line-height:1.55;font-size:15px}
-#v14LockBox .dateGold{margin:16px auto;padding:13px 14px;border-radius:16px;background:rgba(255,215,120,.10);border:1px solid rgba(255,215,120,.45);color:#ffe9a6;font-weight:700}
-#v14LockClose{margin-top:13px;border:0;border-radius:999px;padding:13px 26px;background:linear-gradient(90deg,#8a5b00,#ffd66b,#b98200);color:#171000;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(255,190,50,.25)}
+#v14LockBox .dateGold{margin:16px auto;padding:13px 14px;border-radius:16px;background:rgba(255,215,120,.10);border:1px solid rgba(255,215,120,.48);color:#ffe9a6;font-weight:800}
+#v14LockClose{margin-top:13px;border:0;border-radius:999px;padding:13px 27px;background:linear-gradient(90deg,#8a5b00,#ffd66b,#b98200);color:#171000;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(255,190,50,.25)}
 #v14LockClose:active{transform:scale(.98)}
+.v14LockedForVisitor form,.v14LockedForVisitor .search-box,.v14LockedForVisitor #formCari,.v14LockedForVisitor #searchForm{pointer-events:none;opacity:.55;filter:grayscale(.15)}
 </style>
 
 </head>
@@ -166,45 +168,94 @@ function playSound(){soundBadge.style.display="block";const a=document.getElemen
 function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=["#d5a331","#fff","#1e40af","#22c55e","#f472b6"][Math.floor(Math.random()*5)];c.style.animationDuration=(Math.random()*2+1.7)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),4200)}}
 </script>
 
+
 <div id="v14LockOverlay" role="dialog" aria-modal="true">
   <div id="v14LockBox">
     <div class="goldIcon">⏳</div>
     <h2>Belum Waktunya</h2>
-    <p>Tunggu waktunya. Pengumuman kelulusan belum dibuka sesuai waktu pada timer.</p>
-    <div class="dateGold">2 Juni 2026<br>Pukul 10:00 WIB</div>
-    <button id="v14LockClose">Ya, Saya Tunggu</button>
+    <p>Pengumuman Kelulusan SD Negeri 1 Banjarejo belum dibuka sesuai waktu pada timer.</p>
+    <div class="dateGold">📅 2 Juni 2026<br>🕙 Pukul 10:00 WIB</div>
+    <p>Silakan tunggu hingga waktu pengumuman tiba.</p>
+    <button id="v14LockClose" type="button">Ya, Saya Tunggu</button>
   </div>
 </div>
-<script id="v14-ultra-gold-lock-script">
+<script id="v14-admin-bypass-lock-script">
 (function(){
-  const target = new Date('2026-06-02T10:00:00+07:00');
-  function isLocked(){ return new Date() < target; }
-  function showLock(){
-    const overlay = document.getElementById('v14LockOverlay');
-    if(overlay) overlay.style.display='flex';
+  const RELEASE_DATE = new Date('2026-06-02T10:00:00+07:00');
+
+  function isAdminMode(){
+    try{
+      return localStorage.getItem('adminMode') === 'true'
+          || localStorage.getItem('isAdmin') === 'true'
+          || sessionStorage.getItem('adminMode') === 'true'
+          || document.body.classList.contains('admin-mode')
+          || document.documentElement.classList.contains('admin-mode');
+    }catch(e){
+      return false;
+    }
   }
+
+  function isLockedForVisitor(){
+    if(isAdminMode()) return false;
+    return new Date().getTime() < RELEASE_DATE.getTime();
+  }
+
+  function showBelumWaktunya(){
+    if(!isLockedForVisitor()) return;
+    const overlay = document.getElementById('v14LockOverlay');
+    if(overlay) overlay.style.display = 'flex';
+    document.body.classList.add('v14LockedForVisitor');
+  }
+
+  function hideBelumWaktunya(){
+    const overlay = document.getElementById('v14LockOverlay');
+    if(overlay) overlay.style.display = 'none';
+    document.body.classList.remove('v14LockedForVisitor');
+  }
+
+  window.v14IsLockedForVisitor = isLockedForVisitor;
+  window.v14ShowBelumWaktunya = showBelumWaktunya;
+
   document.addEventListener('DOMContentLoaded', function(){
     const close = document.getElementById('v14LockClose');
-    if(close) close.addEventListener('click', function(){
-      document.getElementById('v14LockOverlay').style.display='none';
-    });
-    if(isLocked()) setTimeout(showLock, 500);
-    const forms = document.querySelectorAll('form');
-    forms.forEach(function(form){
-      form.addEventListener('submit', function(e){
-        if(isLocked()){ e.preventDefault(); showLock(); return false; }
-      }, true);
-    });
-    const inputs = document.querySelectorAll('input,button');
-    inputs.forEach(function(el){
-      if(el.id !== 'v14LockClose'){
-        el.addEventListener('click', function(e){
-          if(isLocked() && (el.tagName==='BUTTON' || el.type==='submit')){
-            e.preventDefault(); showLock(); return false;
-          }
-        }, true);
+    if(close){
+      close.addEventListener('click', function(){
+        const overlay = document.getElementById('v14LockOverlay');
+        if(overlay) overlay.style.display = 'none';
+      });
+    }
+
+    if(isLockedForVisitor()){
+      document.body.classList.add('v14LockedForVisitor');
+      setTimeout(showBelumWaktunya, 500);
+    }else{
+      hideBelumWaktunya();
+      return;
+    }
+
+    document.addEventListener('submit', function(e){
+      if(isLockedForVisitor()){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        showBelumWaktunya();
+        return false;
       }
-    });
+    }, true);
+
+    document.addEventListener('click', function(e){
+      if(!isLockedForVisitor()) return;
+      const el = e.target.closest('button,input[type="submit"],.btn,.button,[onclick]');
+      if(el && el.id !== 'v14LockClose'){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        showBelumWaktunya();
+        return false;
+      }
+    }, true);
+
+    setInterval(function(){
+      if(!isLockedForVisitor()) hideBelumWaktunya();
+    }, 1000);
   });
 })();
 </script>
