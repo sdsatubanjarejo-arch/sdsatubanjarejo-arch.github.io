@@ -84,7 +84,7 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
 #v14LockBox .dateGold{margin:16px auto;padding:13px 14px;border-radius:16px;background:rgba(255,215,120,.10);border:1px solid rgba(255,215,120,.48);color:#ffe9a6;font-weight:800}
 #v14LockClose{margin-top:13px;border:0;border-radius:999px;padding:13px 27px;background:linear-gradient(90deg,#8a5b00,#ffd66b,#b98200);color:#171000;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(255,190,50,.25)}
 #v14LockClose:active{transform:scale(.98)}
-.v14LockedForVisitor form,.v14LockedForVisitor .search-box,.v14LockedForVisitor #formCari,.v14LockedForVisitor #searchForm{pointer-events:none;opacity:.55;filter:grayscale(.15)}
+
 </style>
 
 </head>
@@ -189,15 +189,14 @@ function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");
           || localStorage.getItem('isAdmin') === 'true'
           || sessionStorage.getItem('adminMode') === 'true'
           || document.body.classList.contains('admin-mode')
-          || document.documentElement.classList.contains('admin-mode');
-    }catch(e){
-      return false;
-    }
+          || document.documentElement.classList.contains('admin-mode')
+          || !!document.querySelector('.admin-panel:not([style*="display: none"]), #adminPanel:not([style*="display: none"])');
+    }catch(e){ return false; }
   }
 
   function isLockedForVisitor(){
     if(isAdminMode()) return false;
-    return new Date().getTime() < RELEASE_DATE.getTime();
+    return Date.now() < RELEASE_DATE.getTime();
   }
 
   function showBelumWaktunya(){
@@ -215,6 +214,7 @@ function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");
 
   window.v14IsLockedForVisitor = isLockedForVisitor;
   window.v14ShowBelumWaktunya = showBelumWaktunya;
+  window.v14HideBelumWaktunya = hideBelumWaktunya;
 
   document.addEventListener('DOMContentLoaded', function(){
     const close = document.getElementById('v14LockClose');
@@ -226,13 +226,12 @@ function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");
     }
 
     if(isLockedForVisitor()){
-      document.body.classList.add('v14LockedForVisitor');
       setTimeout(showBelumWaktunya, 500);
     }else{
       hideBelumWaktunya();
-      return;
     }
 
+    // Kunci hanya saat form pencarian dikirim oleh pengunjung sebelum waktunya.
     document.addEventListener('submit', function(e){
       if(isLockedForVisitor()){
         e.preventDefault();
@@ -242,10 +241,14 @@ function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");
       }
     }, true);
 
+    // Kunci hanya tombol cek/cari/kelulusan sebelum waktunya, jangan ganggu mode admin.
     document.addEventListener('click', function(e){
       if(!isLockedForVisitor()) return;
-      const el = e.target.closest('button,input[type="submit"],.btn,.button,[onclick]');
-      if(el && el.id !== 'v14LockClose'){
+      const el = e.target.closest('button,input[type="submit"],.btn,.button');
+      if(!el || el.id === 'v14LockClose') return;
+      const txt = ((el.innerText || el.value || el.id || el.className || '') + '').toLowerCase();
+      const isSearchButton = /cek|cari|kelulusan|lihat|pengumuman|search/.test(txt);
+      if(isSearchButton){
         e.preventDefault();
         e.stopImmediatePropagation();
         showBelumWaktunya();
@@ -255,7 +258,7 @@ function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");
 
     setInterval(function(){
       if(!isLockedForVisitor()) hideBelumWaktunya();
-    }, 1000);
+    }, 500);
   });
 })();
 </script>
