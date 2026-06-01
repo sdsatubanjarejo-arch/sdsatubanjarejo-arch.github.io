@@ -105,13 +105,103 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
 }
 </style>
 
-<style id="banner-fix-v15">
-.certificate,.sertifikat,.certificate-box,.result-card{
-background:transparent !important;
-box-shadow:none !important;
-min-height:auto !important;
+<style id="pengumuman-premium-final-css">
+/* Premium pengumuman kelulusan card */
+.pengumuman-premium-card{
+  margin:22px auto 18px;
+  max-width:920px;
+  width:min(94vw,920px);
+  background:#fffdf6;
+  color:#071832;
+  border:3px solid #c29116;
+  border-radius:24px;
+  box-shadow:0 18px 45px rgba(0,0,0,.32), inset 0 0 0 6px rgba(212,175,55,.18);
+  padding:28px 34px 24px;
+  position:relative;
+  overflow:hidden;
 }
+.pengumuman-premium-card:before,
+.pengumuman-premium-card:after{
+  content:"";
+  position:absolute;
+  width:100px;height:100px;
+  border:5px solid #d4af37;
+  opacity:.9;
+}
+.pengumuman-premium-card:before{left:16px;top:16px;border-right:0;border-bottom:0;border-radius:16px 0 0 0}
+.pengumuman-premium-card:after{right:16px;bottom:16px;border-left:0;border-top:0;border-radius:0 0 16px 0}
+.pengumuman-head{
+  display:grid;
+  grid-template-columns:82px 1fr 82px;
+  align-items:center;
+  gap:16px;
+  text-align:center;
+}
+.pengumuman-head img{width:70px;height:70px;object-fit:contain}
+.pengumuman-school{font-weight:900;font-size:26px;letter-spacing:.02em;color:#061a3a}
+.pengumuman-sub{font-size:14px;line-height:1.35;margin-top:8px;color:#0f2547}
+.pengumuman-title{
+  margin:22px auto 6px;
+  text-align:center;
+  font-weight:900;
+  font-size:42px;
+  line-height:1;
+  letter-spacing:.03em;
+  color:#b98700;
+  text-shadow:0 2px 0 rgba(255,255,255,.65);
+}
+.pengumuman-nomor{text-align:center;font-size:14px;margin-bottom:14px;color:#0b1d3a}
+.pengumuman-body{text-align:center;font-size:17px;line-height:1.45;margin:10px auto;max-width:760px}
+.pengumuman-name{
+  text-align:center;
+  font-weight:900;
+  font-size:38px;
+  line-height:1.08;
+  letter-spacing:.02em;
+  color:#06214d;
+  margin:16px auto 6px;
+}
+.pengumuman-dinyatakan{text-align:center;font-weight:800;font-size:20px;color:#0b1d3a;margin-top:4px}
+.pengumuman-lulus{
+  margin:8px auto 14px;
+  width:max-content;
+  min-width:230px;
+  padding:7px 34px;
+  background:linear-gradient(90deg,#b67a00,#ffe082,#b67a00);
+  color:#061a3a;
+  font-weight:1000;
+  font-size:46px;
+  letter-spacing:.18em;
+  border-radius:8px;
+  box-shadow:0 8px 18px rgba(183,122,0,.25);
+}
+.pengumuman-note{text-align:center;font-size:15px;line-height:1.35;margin:10px auto 20px;max-width:760px;color:#10213d}
+.pengumuman-sign{
+  width:330px;
+  margin-left:auto;
+  margin-right:42px;
+  text-align:center;
+  font-size:14px;
+  line-height:1.35;
+  color:#071832;
+}
+.pengumuman-sign .ks-name{margin-top:36px;font-weight:900;text-decoration:underline}
+#pengumumanPremiumCard{display:none}
+.result-open #pengumumanPremiumCard, .show-result #pengumumanPremiumCard{display:block}
+@media (max-width:720px){
+  .pengumuman-premium-card{padding:22px 16px;border-radius:18px}
+  .pengumuman-head{grid-template-columns:54px 1fr 54px;gap:8px}
+  .pengumuman-head img{width:52px;height:52px}
+  .pengumuman-school{font-size:18px}
+  .pengumuman-title{font-size:28px}
+  .pengumuman-name{font-size:27px}
+  .pengumuman-lulus{font-size:32px;min-width:180px}
+  .pengumuman-sign{width:100%;margin:18px auto 0}
+}
+/* remove previous empty white certificate block where possible */
+.signature-card:empty,.certificate:empty,.sertifikat:empty,.certificate-box:empty,.result-card:empty{display:none!important}
 </style>
+
 </head>
 <body>
 <div class="page">
@@ -136,7 +226,7 @@ min-height:auto !important;
     <section id="result">
       <div class="result-card"><div class="photo"><img id="fotoSiswa" alt="Foto Siswa"></div><div><div class="nama" id="namaSiswa"></div><div class="row"><span>NISN</span><span>:</span><span id="nisn">-</span></div><div class="row"><span>Kelas</span><span>:</span><span>VI</span></div><div class="row"><span>Status Kelulusan</span><span>:</span><span><b class="badge">✓ Lulus</b></span></div></div></div>
       <div class="message">🎓 <b>Selamat! Anda dinyatakan <span style="color:#159447">Lulus</span>.</b><br>Teruslah belajar dan raih cita-citamu setinggi langit.</div>
-      <div class="signature"><div></div></div>
+      <div class="signature"><div>Kabupaten Grobogan, 2 Juni 2026</div><div>Kepala SD Negeri 1 Banjarejo</div><div class="ks">Suyatmi, S.Pd</div><div>NIP. 197108272000032002</div></div>
       <button class="print-btn" onclick="window.print()">Cetak / Simpan Hasil</button>
     </section>
     <div class="location"><span>📍</span><br>Desa Banjarejo, Kecamatan Gabus,<br>Kabupaten Grobogan<br><br>📅 2 Juni 2026 Pukul 10:00 WIB</div>
@@ -278,12 +368,12 @@ function cek(){
   setTimeout(()=>{bar.style.transition="1s";bar.style.width="100%"},40);
   setTimeout(()=>{
     loading.style.display="none";
-    envelopeBox.style.display="block";
+    envelopeBox.style.display="block"; document.body.classList.add("result-open");
     env.classList.remove("open");
     envelopeBox.scrollIntoView({behavior:"smooth",block:"center"});
   },1050);
 }
-function bukaAmplop(){env.classList.add("open");playSound();setTimeout(()=>{namaSiswa.innerHTML=namaAktif;fotoSiswa.src=siswa[namaAktif];document.getElementById("nisn").innerHTML=nisn[namaAktif]||"-";result.style.display="block";konfeti();result.scrollIntoView({behavior:"smooth",block:"start"})},950)}
+function bukaAmplop(){env.classList.add("open"); document.body.classList.add("result-open");playSound();setTimeout(()=>{namaSiswa.innerHTML=namaAktif;fotoSiswa.src=siswa[namaAktif];document.getElementById("nisn").innerHTML=nisn[namaAktif]||"-";result.style.display="block"; document.body.classList.add("result-open");konfeti();result.scrollIntoView({behavior:"smooth",block:"start"})},950)}
 function playSound(){soundBadge.style.display="block";const a=document.getElementById("suaraSelamat");a.currentTime=0;a.volume=.9;a.play().catch(()=>{})}
 function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=["#d5a331","#fff","#1e40af","#22c55e","#f472b6"][Math.floor(Math.random()*5)];c.style.animationDuration=(Math.random()*2+1.7)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),4200)}}
 </script>
@@ -313,6 +403,65 @@ document.addEventListener("DOMContentLoaded",()=>{
     setTimeout(()=>{ if(locked && !adminMode) showBelumWaktunya(); },700);
   }
 });
+</script>
+
+
+<div id="pengumumanPremiumCard" class="pengumuman-premium-card">
+  <div class="pengumuman-head">
+    <img src="assets/logo-sdn1-banjarejo.png" alt="Logo SD Negeri 1 Banjarejo">
+    <div>
+      <div class="pengumuman-school">SD NEGERI 1 BANJAREJO</div>
+      <div class="pengumuman-sub">Kecamatan Gabus Kabupaten Grobogan<br>Tahun Ajaran 2025/2026</div>
+    </div>
+    <img src="assets/logo-kab-grobogan.png" alt="Logo Kabupaten Grobogan">
+  </div>
+  <div class="pengumuman-title">PENGUMUMAN KELULUSAN</div>
+  <div class="pengumuman-nomor">Nomor: 421.2/____/SDN1-BJR/2026</div>
+  <div class="pengumuman-body">
+    Berdasarkan hasil rapat Dewan Guru SD Negeri 1 Banjarejo dan ketentuan kelulusan Tahun Ajaran 2025/2026, peserta didik berikut dinyatakan:
+  </div>
+  <div class="pengumuman-name" id="pengumumanNamaSiswa">NAMA SISWA</div>
+  <div class="pengumuman-dinyatakan">DINYATAKAN</div>
+  <div class="pengumuman-lulus">LULUS</div>
+  <div class="pengumuman-note">
+    Selamat atas keberhasilan yang telah dicapai. Semoga ilmu yang diperoleh menjadi bekal untuk meraih masa depan yang gemilang.
+  </div>
+  <div class="pengumuman-sign">
+    <div>Kabupaten Grobogan, 2 Juni 2026</div>
+    <div>Kepala SD Negeri 1 Banjarejo</div>
+    <div class="ks-name">Suyatmi, S.Pd</div>
+    <div>NIP. 197108272000032002</div>
+  </div>
+</div>
+<script id="pengumuman-premium-final-js">
+(function(){
+  function updatePengumumanName(){
+    var name = "";
+    try{
+      if(window.namaAktif) name = window.namaAktif;
+      var namaInput = document.getElementById("nama");
+      if(!name && namaInput) name = namaInput.value || "";
+      var resultTitle = document.querySelector("#result h1,#result h2,#result .nama,.nama-siswa");
+      if(!name && resultTitle) name = resultTitle.textContent || "";
+    }catch(e){}
+    name = (name || "NAMA SISWA").toString().trim().toUpperCase();
+    var target = document.getElementById("pengumumanNamaSiswa");
+    if(target) target.textContent = name;
+  }
+  document.addEventListener("DOMContentLoaded", function(){
+    var result = document.getElementById("result") || document.querySelector(".result,.hasil");
+    var card = document.getElementById("pengumumanPremiumCard");
+    if(result && card && !result.contains(card)){
+      var btn = Array.from(document.querySelectorAll("button,a")).find(function(el){
+        return /cetak|simpan/i.test(el.textContent || "");
+      });
+      if(btn && btn.parentNode) btn.parentNode.insertBefore(card, btn);
+      else result.appendChild(card);
+    }
+    setInterval(updatePengumumanName, 500);
+    document.addEventListener("click", function(){ setTimeout(updatePengumumanName, 250); }, true);
+  });
+})();
 </script>
 
 </body></html>
