@@ -226,7 +226,8 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
     <section id="result">
       <div class="result-card"><div class="photo"><img id="fotoSiswa" alt="Foto Siswa"></div><div><div class="nama" id="namaSiswa"></div><div class="row"><span>NISN</span><span>:</span><span id="nisn">-</span></div><div class="row"><span>Kelas</span><span>:</span><span>VI</span></div><div class="row"><span>Status Kelulusan</span><span>:</span><span><b class="badge">✓ Lulus</b></span></div></div></div>
       <div class="message">🎓 <b>Selamat! Anda dinyatakan <span style="color:#159447">Lulus</span>.</b><br>Teruslah belajar dan raih cita-citamu setinggi langit.</div>
-      
+      <div class="signature"><div></div><div></div><div class="ks"></div><div></div></div>
+      <button class="print-btn" onclick="window.print()">Cetak / Simpan Hasil</button>
     </section>
     <div class="location"><span>📍</span><br>Desa Banjarejo, Kecamatan Gabus,<br>Kabupaten Grobogan<br><br>📅 2 Juni 2026 Pukul 10:00 WIB</div>
   </main>
@@ -415,7 +416,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     <img src="assets/logo-kab-grobogan.png" alt="Logo Kabupaten Grobogan">
   </div>
   <div class="pengumuman-title">PENGUMUMAN KELULUSAN</div>
-  
+  <div class="pengumuman-nomor"></div>
   <div class="pengumuman-body">
     Berdasarkan hasil rapat Dewan Guru SD Negeri 1 Banjarejo dan ketentuan kelulusan Tahun Ajaran 2025/2026, peserta didik berikut dinyatakan:
   </div>
@@ -426,7 +427,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     Selamat atas keberhasilan yang telah dicapai. Semoga ilmu yang diperoleh menjadi bekal untuk meraih masa depan yang gemilang.
   </div>
   <div class="pengumuman-sign">
-
+    <div></div>
+    <div></div>
+    <div class="ks-name"></div>
+    <div></div>
   </div>
 </div>
 <script id="pengumuman-premium-final-js">
@@ -461,3 +465,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 </script>
 
 </body></html>
+<style>
+.pengumuman-sign,.signature,.ttd,.kepsek,.nip,.sign-box,.signature-box{
+display:none !important;
+}
+</style>
