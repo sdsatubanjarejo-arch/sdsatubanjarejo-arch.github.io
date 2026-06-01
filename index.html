@@ -100,7 +100,7 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
     <div class="divider"></div>
   </header>
   <main class="panel">
-    <div class="timer" id="timer"><div class="timer-title">Pengumuman dibuka pada:</div><div class="timer-date">2 Juni 2026 Pukul 10:00 WIB <small>• 10:00 WIB</small></div><div class="countdown"><div><span id="d">0</span>hari</div><div><span id="h">0</span>jam</div><div><span id="m">0</span>menit</div><div><span id="s">0</span>detik</div></div></div>
+    <div class="timer" id="timer"><div class="timer-title">Pengumuman dibuka pada:</div><div class="timer-date">2 Juni 2026 <small>• Pukul 10:00 WIB</small></div><div class="countdown"><div><span id="d">0</span>hari</div><div><span id="h">0</span>jam</div><div><span id="m">0</span>menit</div><div><span id="s">0</span>detik</div></div></div>
     <div class="label">Masukan Nama Lengkap</div>
     <div class="search"><input id="nama" placeholder="Contoh: Budi Santoso"><button id="btnCari" onclick="cek()">🔍 Cari Hasil</button></div>
     <div id="loading">Memverifikasi data siswa...<div class="bar"><span id="bar"></span></div></div>
@@ -159,10 +159,105 @@ const nisn={
 };
 const unlockTime=new Date("2026-06-02T10:00:00+07:00").getTime();
 let locked=true,namaAktif="",adminMode=false,adminTapCount=0,adminTapTimer=null;
-function updateTimer(){if(adminMode)return;let diff=unlockTime-Date.now();const btn=document.getElementById("btnCari");if(diff<=0){locked=false;timer.style.display="none";btn.disabled=false;btn.innerHTML="🔍 Cari Hasil";return}locked=true;btn.disabled=true;btn.innerHTML="Belum Dibuka";let d=Math.floor(diff/86400000);diff%=86400000;let h=Math.floor(diff/3600000);diff%=3600000;let m=Math.floor(diff/60000);let s=Math.floor((diff%60000)/1000);d=d<0?0:d;document.getElementById("d").innerHTML=d;document.getElementById("h").innerHTML=h;document.getElementById("m").innerHTML=m;document.getElementById("s").innerHTML=s}
+function updateTimer(){
+  const btn=document.getElementById("btnCari");
+  if(adminMode){
+    locked=false;
+    timer.style.display="none";
+    btn.disabled=false;
+    btn.innerHTML="🔍 Cari Hasil";
+    return;
+  }
+  let diff=unlockTime-Date.now();
+  if(diff<=0){
+    locked=false;
+    timer.style.display="none";
+    btn.disabled=false;
+    btn.innerHTML="🔍 Cari Hasil";
+    hideBelumWaktunya();
+    return;
+  }
+  locked=true;
+  btn.disabled=true;
+  btn.innerHTML="Belum Dibuka";
+  let d=Math.floor(diff/86400000);diff%=86400000;
+  let h=Math.floor(diff/3600000);diff%=3600000;
+  let m=Math.floor(diff/60000);
+  let s=Math.floor((diff%60000)/1000);
+  d=d<0?0:d;
+  document.getElementById("d").innerHTML=d;
+  document.getElementById("h").innerHTML=h;
+  document.getElementById("m").innerHTML=m;
+  document.getElementById("s").innerHTML=s;
+}
 setInterval(updateTimer,1000);updateTimer();
-document.querySelector(".logo-wrap").addEventListener("click",()=>{adminTapCount++;clearTimeout(adminTapTimer);adminTapTimer=setTimeout(()=>adminTapCount=0,2500);if(adminTapCount>=5){adminTapCount=0;let p=prompt("Masukkan Password Admin:");if(p==="SDN1BANJAREJO2026"){adminMode=true;locked=false;timer.style.display="none";btnCari.disabled=false;btnCari.innerHTML="🔍 Cari Hasil";alert("Mode Admin Aktif")}}});
-function cek(){if(locked){alert("Pengumuman dibuka 2 Juni 2026 Pukul 10:00 WIB pukul 10:00 WIB");return}const nm=document.getElementById("nama").value.toUpperCase().trim();if(nm===""){alert("Masukkan nama siswa");return}if(!siswa[nm]){alert("Nama tidak ditemukan");return}namaAktif=nm;result.style.display="none";envelopeBox.style.display="none";loading.style.display="block";const bar=document.querySelector(".bar span");bar.style.transition="none";bar.style.width="0";setTimeout(()=>{bar.style.transition="1s";bar.style.width="100%"},40);setTimeout(()=>{loading.style.display="none";envelopeBox.style.display="block";env.classList.remove("open");envelopeBox.scrollIntoView({behavior:"smooth",block:"center"})},1050)}
+document.querySelector(".logo-wrap").addEventListener("click",()=>{
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer=setTimeout(()=>adminTapCount=0,2500);
+  if(adminTapCount>=5){
+    adminTapCount=0;
+    let p=prompt("Masukkan Password Admin:");
+    if(p==="SDN1BANJAREJO2026"){
+      adminMode=true;
+      try{localStorage.setItem("adminMode","true")}catch(e){}
+      locked=false;
+      timer.style.display="none";
+      btnCari.disabled=false;
+      btnCari.innerHTML="🔍 Cari Hasil";
+      hideBelumWaktunya();
+      alert("Mode Admin Aktif");
+    }
+  }
+});
+function normNama(v){
+  return (v||"").toUpperCase()
+    .replace(/['’`]/g,"")
+    .replace(/[^A-Z0-9]/g,"")
+    .trim();
+}
+function cariNamaSiswa(input){
+  const target=normNama(input);
+  return Object.keys(siswa).find(k=>normNama(k)===target);
+}
+function showBelumWaktunya(){
+  const overlay=document.getElementById("v14LockOverlay");
+  if(overlay) overlay.style.display="flex";
+}
+function hideBelumWaktunya(){
+  const overlay=document.getElementById("v14LockOverlay");
+  if(overlay) overlay.style.display="none";
+}
+function cek(){
+  if(locked && !adminMode){
+    showBelumWaktunya();
+    return;
+  }
+  const inputNama=document.getElementById("nama").value.trim();
+  if(inputNama===""){
+    alert("Masukkan nama siswa");
+    return;
+  }
+  const nm=cariNamaSiswa(inputNama);
+  if(!nm){
+    alert("Nama tidak ditemukan. Pastikan nama lengkap siswa sudah benar.");
+    return;
+  }
+  namaAktif=nm;
+  result.style.display="none";
+  envelopeBox.style.display="none";
+  loading.style.display="block";
+  const bar=document.querySelector(".bar span");
+  bar.style.transition="none";
+  bar.style.width="0";
+  setTimeout(()=>{bar.style.transition="1s";bar.style.width="100%"},40);
+  setTimeout(()=>{
+    loading.style.display="none";
+    envelopeBox.style.display="block";
+    env.classList.remove("open");
+    envelopeBox.scrollIntoView({behavior:"smooth",block:"center"});
+  },1050);
+}
 function bukaAmplop(){env.classList.add("open");playSound();setTimeout(()=>{namaSiswa.innerHTML=namaAktif;fotoSiswa.src=siswa[namaAktif];document.getElementById("nisn").innerHTML=nisn[namaAktif]||"-";result.style.display="block";konfeti();result.scrollIntoView({behavior:"smooth",block:"start"})},950)}
 function playSound(){soundBadge.style.display="block";const a=document.getElementById("suaraSelamat");a.currentTime=0;a.volume=.9;a.play().catch(()=>{})}
 function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=["#d5a331","#fff","#1e40af","#22c55e","#f472b6"][Math.floor(Math.random()*5)];c.style.animationDuration=(Math.random()*2+1.7)+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),4200)}}
@@ -179,88 +274,20 @@ function konfeti(){for(let i=0;i<110;i++){const c=document.createElement("div");
     <button id="v14LockClose" type="button">Ya, Saya Tunggu</button>
   </div>
 </div>
-<script id="v14-admin-bypass-lock-script">
-(function(){
-  const RELEASE_DATE = new Date('2026-06-02T10:00:00+07:00');
 
-  function isAdminMode(){
-    try{
-      return localStorage.getItem('adminMode') === 'true'
-          || localStorage.getItem('isAdmin') === 'true'
-          || sessionStorage.getItem('adminMode') === 'true'
-          || document.body.classList.contains('admin-mode')
-          || document.documentElement.classList.contains('admin-mode')
-          || !!document.querySelector('.admin-panel:not([style*="display: none"]), #adminPanel:not([style*="display: none"])');
-    }catch(e){ return false; }
+<script id="v14-safe-modal-only">
+document.addEventListener("DOMContentLoaded",()=>{
+  const close=document.getElementById("v14LockClose");
+  if(close){
+    close.addEventListener("click",()=>{
+      const overlay=document.getElementById("v14LockOverlay");
+      if(overlay) overlay.style.display="none";
+    });
   }
-
-  function isLockedForVisitor(){
-    if(isAdminMode()) return false;
-    return Date.now() < RELEASE_DATE.getTime();
+  if(typeof locked!=="undefined" && locked && !adminMode){
+    setTimeout(()=>{ if(locked && !adminMode) showBelumWaktunya(); },700);
   }
-
-  function showBelumWaktunya(){
-    if(!isLockedForVisitor()) return;
-    const overlay = document.getElementById('v14LockOverlay');
-    if(overlay) overlay.style.display = 'flex';
-    document.body.classList.add('v14LockedForVisitor');
-  }
-
-  function hideBelumWaktunya(){
-    const overlay = document.getElementById('v14LockOverlay');
-    if(overlay) overlay.style.display = 'none';
-    document.body.classList.remove('v14LockedForVisitor');
-  }
-
-  window.v14IsLockedForVisitor = isLockedForVisitor;
-  window.v14ShowBelumWaktunya = showBelumWaktunya;
-  window.v14HideBelumWaktunya = hideBelumWaktunya;
-
-  document.addEventListener('DOMContentLoaded', function(){
-    const close = document.getElementById('v14LockClose');
-    if(close){
-      close.addEventListener('click', function(){
-        const overlay = document.getElementById('v14LockOverlay');
-        if(overlay) overlay.style.display = 'none';
-      });
-    }
-
-    if(isLockedForVisitor()){
-      setTimeout(showBelumWaktunya, 500);
-    }else{
-      hideBelumWaktunya();
-    }
-
-    // Kunci hanya saat form pencarian dikirim oleh pengunjung sebelum waktunya.
-    document.addEventListener('submit', function(e){
-      if(isLockedForVisitor()){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        showBelumWaktunya();
-        return false;
-      }
-    }, true);
-
-    // Kunci hanya tombol cek/cari/kelulusan sebelum waktunya, jangan ganggu mode admin.
-    document.addEventListener('click', function(e){
-      if(!isLockedForVisitor()) return;
-      const el = e.target.closest('button,input[type="submit"],.btn,.button');
-      if(!el || el.id === 'v14LockClose') return;
-      const txt = ((el.innerText || el.value || el.id || el.className || '') + '').toLowerCase();
-      const isSearchButton = /cek|cari|kelulusan|lihat|pengumuman|search/.test(txt);
-      if(isSearchButton){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        showBelumWaktunya();
-        return false;
-      }
-    }, true);
-
-    setInterval(function(){
-      if(!isLockedForVisitor()) hideBelumWaktunya();
-    }, 500);
-  });
-})();
+});
 </script>
 
 </body></html>
