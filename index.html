@@ -69,7 +69,7 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
 .photo{width:170px;height:220px;border-radius:16px;padding:5px;background:linear-gradient(135deg,#d5a331,#002a63)}
 .photo img{width:100%;height:100%;object-fit:contain;object-position:center bottom;border-radius:12px;background:linear-gradient(180deg,#fffdf1,#fff3bd)}
 .nama{font-size:28px;font-weight:800;color:#082653;margin-bottom:12px}.row{display:grid;grid-template-columns:140px 15px 1fr;font-size:16px;margin:8px 0}.badge{display:inline-block;background:#22a447;color:white;font-weight:700;border-radius:999px;padding:7px 16px}
-.message,.signature{margin-top:14px;background:rgba(255,255,255,.97);color:#061b3a;border-radius:16px;padding:14px 18px;text-align:center}.ttd-img{width:115px;display:block;margin:2px auto -2px}.ks{font-size:19px;font-weight:800;text-decoration:underline;text-underline-offset:5px}.print-btn{width:100%;height:48px;margin-top:12px}
+.message,.signature{margin-top:14px;background:rgba(255,255,255,.97);color:#061b3a;border-radius:16px;padding:14px 18px;text-align:center}.ttd-img{display:none!important}.signature .ks{margin-top:34px}.ks{font-size:19px;font-weight:800;text-decoration:underline;text-underline-offset:5px}.print-btn{width:100%;height:48px;margin-top:12px}
 .confetti{position:fixed;top:-18px;width:9px;height:9px;z-index:99;animation:fall linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 @media(max-width:720px){.admin-note{display:none!important;display:none}.logo-wrap{width:150px;height:150px}.logo{width:130px}.title{font-size:34px}.school{font-size:24px}.timer-date{font-size:24px}.countdown span{font-size:24px}.search{grid-template-columns:1fr}button{height:50px}.envelope-stage{height:210px}.envelope{width:276px;height:172px}.result-card{grid-template-columns:1fr;text-align:center}.photo{width:135px;height:176px;margin:auto}.row{grid-template-columns:1fr;text-align:center}.row span:nth-child(2){display:none}.location{font-size:17px}}
 </style>
@@ -87,6 +87,23 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
 
 </style>
 
+
+<style id="v14-print-one-page-cert">
+@media print{
+  @page{size:A4 portrait;margin:10mm}
+  body{background:white!important;color:#000!important}
+  .header,.timer,.label,.search,#loading,#envelopeBox,.location,#v14LockOverlay,.print-btn,.gold-dots{display:none!important}
+  .page{background:white!important;padding:0!important;min-height:auto!important;overflow:visible!important}
+  .page:before,.page:after{display:none!important}
+  .panel{width:100%!important;margin:0!important}
+  #result{display:block!important;break-inside:avoid;page-break-inside:avoid}
+  .result-card{box-shadow:none!important;border:2px solid #d5a331!important;border-radius:18px!important;padding:14px!important;grid-template-columns:130px 1fr!important;gap:18px!important}
+  .photo{width:120px!important;height:156px!important;margin:auto!important}
+  .nama{font-size:24px!important}
+  .message,.signature{border:1.5px solid #d5a331!important;box-shadow:none!important;margin-top:10px!important;padding:12px!important}
+  .signature .ks{margin-top:30px!important}
+}
+</style>
 </head>
 <body>
 <div class="page">
@@ -111,7 +128,7 @@ button:disabled{background:#6b7280;color:#d1d5db;box-shadow:none}
     <section id="result">
       <div class="result-card"><div class="photo"><img id="fotoSiswa" alt="Foto Siswa"></div><div><div class="nama" id="namaSiswa"></div><div class="row"><span>NISN</span><span>:</span><span id="nisn">-</span></div><div class="row"><span>Kelas</span><span>:</span><span>VI</span></div><div class="row"><span>Status Kelulusan</span><span>:</span><span><b class="badge">✓ Lulus</b></span></div></div></div>
       <div class="message">🎓 <b>Selamat! Anda dinyatakan <span style="color:#159447">Lulus</span>.</b><br>Teruslah belajar dan raih cita-citamu setinggi langit.</div>
-      <div class="signature"><div>Kabupaten Grobogan, 2 Juni 2026 Pukul 10:00 WIB</div><div>Kepala SD Negeri 1 Banjarejo</div><img src="ttd-stempel.png" class="ttd-img"><div class="ks">Suyatmi, S.Pd</div><div>NIP. 197108272000032002</div></div>
+      <div class="signature"><div>Kabupaten Grobogan, 2 Juni 2026</div><div>Kepala SD Negeri 1 Banjarejo</div><div class="ks">Suyatmi, S.Pd</div><div>NIP. 197108272000032002</div></div>
       <button class="print-btn" onclick="window.print()">Cetak / Simpan Hasil</button>
     </section>
     <div class="location"><span>📍</span><br>Desa Banjarejo, Kecamatan Gabus,<br>Kabupaten Grobogan<br><br>📅 2 Juni 2026 Pukul 10:00 WIB</div>
